@@ -23,7 +23,7 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
-        lastTime;
+		lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
@@ -80,8 +80,30 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
+
+	/* If the enemy & player collide, reset player back to original position.
+	 * We're using a range of 20 for both x and y to account for any math discrepancies.
+	 * Both x, y and new_x, new_y must be updated for the player.
+     */
+	function checkCollisions() {
+		allEnemies.forEach(function(enemy) {
+			if (enemy.y >= player.y - 10 && enemy.y <= player.y + 10
+				&& enemy.x >= player.x - 10 && enemy.x <= player.x + 10) {
+					player.x = player.new_x = 200;
+					player.y = player.new_y = 400;
+			}
+		})
+		allItems.forEach(function(item) {
+			if (item.y >= player.y - 10 && item.y <= player.y + 10
+				&& item.x >= player.x - 10 && item.x <= player.x + 10) {
+                	// Disappear from screen
+					item.x = -100;
+					item.y = -100;
+			}
+		})
+	}
 
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
@@ -152,6 +174,13 @@ var Engine = (function(global) {
             enemy.render();
         });
 
+        /* Loop through all of the objects within the allItems array and call
+         * the render function you have defined.
+         */
+        allItems.forEach(function(item) {
+            item.render();
+        });
+
         player.render();
     }
 
@@ -172,7 +201,14 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+		'images/Heart.png',
+		'images/Key.png',
+		'images/Star.png',
+		'images/char-cat-girl.png',
+		'images/char-horn-girl.png',
+		'images/char-pink-girl.png',
+		'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
 

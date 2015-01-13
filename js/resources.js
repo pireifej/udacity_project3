@@ -98,7 +98,7 @@
     function onReady(func) {
         readyCallbacks.push(func);
     }
-
+ 
     /* This object defines the publicly accessible functions available to
      * developers by creating a global Resources object.
      */
